@@ -29,6 +29,13 @@ class DetailsViewController: UIViewController {
         configureViewController()
     }
     
+    /**
+     Objective-C Selector function for external link opening
+
+     Calling this method takes the `viewmodel.url` to externally open a url/link using safari 
+
+     - Parameter sender: the button that calls the function
+     */
     @objc func goToStore(sender: UIButton) {
         if let url = viewModel.url {
             if UIApplication.shared.canOpenURL(url) {
@@ -37,8 +44,12 @@ class DetailsViewController: UIViewController {
         }
     }
     
+    /**
+     setups our View and Constraints for this view we're in
+
+     Calling this method on viewDidLoad to ensure our UI is approprately set up and Auto Layout is correct
+     */
     func setupView() {
-       
         detailsAlbumLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1)
         detailsAlbumLabel.textAlignment = .center
         detailsAlbumLabel.numberOfLines = 0
@@ -118,6 +129,11 @@ class DetailsViewController: UIViewController {
         
     }
     
+    /**
+     Configure the viewController's UI elements with the appropriate data
+
+     Calling this method sets the UI elements with the appropriate data from our `viewModel`
+     */
     func configureViewController() {
         detailsAlbumLabel.text = viewModel.album.name
         detailsArtistLabel.text = viewModel.album.artistName

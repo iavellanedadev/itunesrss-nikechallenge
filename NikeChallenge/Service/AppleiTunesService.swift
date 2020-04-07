@@ -7,18 +7,24 @@
 //
 
 import Foundation
-
+/// Blueprint for our service class
 protocol GetAlbums {
     func getAlbums(for feed: URL?, completion: @escaping AlbumsCompletionHandler)
 }
-
+/// Our service class for fetching the albums from itunes' rss feed
 final class AppleiTunesService: GetAlbums {
+    /**
+     Get the albums from the itunes rss feed
+
+     Calling this method gets  an `Album` array from JSON fetched.
+
+     - Parameter feed: the URL/endpoint where we are fetching this data from
+     */
     func getAlbums(for feed: URL?, completion: @escaping AlbumsCompletionHandler) {
 
         guard let url = feed else {
             completion(.failure(ErrorInfo(errorCode: .badUrl, errorDescription: "BAD URL", statusCode: 0)))
             return
-            
         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in

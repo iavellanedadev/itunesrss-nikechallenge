@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+///Our singleton class for Loading the images onto the imageView, or cancelling the load if the user scrolls away from the image (on the cell)
 final class UIImageLoader {
     static let loader = UIImageLoader()
     
@@ -16,7 +16,14 @@ final class UIImageLoader {
     private var imageIdStorage = [UIImageView: UUID]()
 
     private init() {}
+    
+    /**
+     Load the image!
 
+     Calling this method loads the image from our `ImageFetcher` service.
+
+     - Parameter url: The url for the image that we are attempting to load
+     */
     func load(_ url: String, for imageView: UIImageView) {
         
         let token = imageFetcher.loadImage(url) { result in
@@ -38,9 +45,18 @@ final class UIImageLoader {
         }
     }
 
+    /**
+     Cancel loading the image!
+
+     Calling this method cancels the image from loading through our `ImageFetcher` service.
+      The User scrolled away and the image is no longer needed to load, we check for the `uniqueId` uuid identifier
+     using the imageview, then cancel the load.
+
+     - Parameter imageView: The imageview that we are cancelling the load for
+     */
     func cancel(for imageView: UIImageView) {
-        if let uuid = imageIdStorage[imageView] {
-            imageFetcher.cancelLoad(uuid)
+        if let uniqueId = imageIdStorage[imageView] {
+            imageFetcher.cancelLoad(uniqueId)
             imageIdStorage.removeValue(forKey: imageView)
         }
     }

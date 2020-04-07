@@ -11,25 +11,41 @@ import XCTest
 
 class NikeChallengeTests: XCTestCase {
     var mockAppleiTunesService: MockAppleiTunesService!
+    var mockDataFileName: String!
+    let bundle = Bundle(for:NikeChallengeTests.self)
 
+    
     override func setUpWithError() throws {
         mockAppleiTunesService = MockAppleiTunesService()
+        mockDataFileName = "mockFeedData"
     }
     
-    func testFetchDataCount()
-    {
-        mockAppleiTunesService.getAlbums{ result in
+    /**
+     Test our (mock) data count!
+
+     Using this function to test that our mock data count has the appropriate size,
+     the mockdata is set to 38, all we want to ensure is that there at more than 10 items
+     */
+    func testFetchDataCount() {
+        let url = self.bundle.url(forResource: mockDataFileName, withExtension: "json")
+        mockAppleiTunesService.getAlbums(for: url){ result in
             switch result {
-            case .success(let music):
-                guard let albums = music as? [Album] else {return}
+            case .success(let albums):
                 XCTAssertGreaterThan(albums.count, 10)
+                
             case .failure(let err):
                 XCTFail("Failed Grabbing Albums: \(err.errorDescription ?? err.localizedDescription)")
             }
         }
     }
     
-    func testAlbumDataFields(){
+    /**
+     Test our (mock) data fields, and if there is data
+
+     Using this function to test that our mock data (of a single album) has the desired fields,
+     we really only need 2 of these here: `album.artistName` and `album.genres`
+     */
+    func testAlbumDataFields() {
 
         if let album = mockAppleiTunesService.getSingleAlbum() {
             
@@ -42,8 +58,14 @@ class NikeChallengeTests: XCTestCase {
 
     }
     
-    func testAlbumGenresCount()
-    {
+    /**
+     Test our genres count and measure the time it takes to format our string
+
+     Using this function to test
+     1. our single album mock `album.genres` containts at least two genre items
+     2. measure the time it takes to format our string for displaying the genres
+     */
+    func testAlbumGenresCount() {
         if let album = mockAppleiTunesService.getSingleAlbum() {
             
             XCTAssertGreaterThanOrEqual(album.genres.count, 2)
@@ -55,13 +77,19 @@ class NikeChallengeTests: XCTestCase {
             XCTFail("Failed Getting Album")
         }
     }
-
-    class MockAppleiTunesService: GetAlbums{
+/// Our mock service class for testing, we want to use our mock data, conform to our `GetAlbums` protocol and use this class for testing out business logic, without worrying about a backend being down or having latency issues that can affect our assertions unpredictably
+    class MockAppleiTunesService: GetAlbums {
 
         var mockDataFileName = "mockFeedData"
         let bundle = Bundle(for:NikeChallengeTests.self)
+        /**
+         Get the albums from the itunes rss feed
 
-        func getAlbums(completion: @escaping CompletionHandler) {
+         Calling this method gets  an `Album` array from JSON fetched.
+
+         - Parameter feed: the URL/endpoint where we are fetching this data from (in this case our main bundle)
+         */
+        func getAlbums(for feed: URL?, completion: @escaping AlbumsCompletionHandler) {
             if let url = bundle.url(forResource: mockDataFileName, withExtension: "json") {
                 do {
                     let data = try Data(contentsOf: url)
@@ -74,7 +102,11 @@ class NikeChallengeTests: XCTestCase {
                 }
             }
         }
-        
+        /**
+         Get a single album!
+
+         Calling this method gets  an `Album` array from mock JSON stored locally
+         */
         func getSingleAlbum() -> Album?
         {
             if let url =  bundle.url(forResource: "mockAlbumData", withExtension: "json") {

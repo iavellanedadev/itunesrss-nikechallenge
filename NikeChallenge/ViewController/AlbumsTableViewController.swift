@@ -19,6 +19,12 @@ class AlbumsTableViewController: UIViewController {
         setupTableView()
     }
     
+    /**
+     Setup our table view and constraints!
+
+     Calling this method from viewDidLoad to ensure we setup our UI properly,
+     registering out tableview Cell and making our initial call to populate our list with data
+     */
     func setupTableView()
     {
         view.addSubview(tableView)

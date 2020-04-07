@@ -20,7 +20,11 @@ class AlbumsViewModel {
 }
 
 extension AlbumsViewModel {
-    
+    /**
+     Tell our service(DJ) class to grab the data(music)!
+
+     Calling this method fetches the music to display in our list
+     */
     func getMusic() {
         AppleiTunesService().getAlbums(for: URLMusicFeed.oneHundred.url) { [weak self] response in
             switch response {
@@ -36,6 +40,13 @@ extension AlbumsViewModel {
 }
 
 extension AlbumsViewModel {
+    /**
+     Make a single album view model!
+
+     Calling this method creates an instance of a separate view model for our detailed Album view
+
+     - Parameter index: the index of the `album` in our `Album` array
+     */
     func makeAlbumViewModel(for index: Int) -> AlbumViewModel {
         let album = albums[index]
         return AlbumViewModel(album: album)
