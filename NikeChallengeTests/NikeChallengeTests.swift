@@ -48,7 +48,7 @@ class NikeChallengeTests: XCTestCase {
             
             XCTAssertGreaterThanOrEqual(album.genres.count, 2)
             measure {
-                album.genres.prefix(3).map({$0.name}).joined(separator: "/")
+                let _ = album.genres.prefix(3).map({$0.name}).joined(separator: "/")
             }
         }
         else{
