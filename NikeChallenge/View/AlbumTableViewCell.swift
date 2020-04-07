@@ -33,10 +33,12 @@ class AlbumTableViewCell: UITableViewCell {
         contentHeightAnchor.priority = UILayoutPriority(rawValue: 750)
         contentHeightAnchor.isActive = true
         
+        albumArtImageView.image = #imageLiteral(resourceName: "placeholdermusic")
         albumArtImageView.contentMode = .scaleToFill
         albumNameLabel.font = UIFont.systemFont(ofSize: 24)
         albumNameLabel.numberOfLines = 0
         albumArtistLabel.numberOfLines = 0
+        
         let completeView = UIView()
         completeView.clipsToBounds = true
         completeView.layer.cornerRadius = 1
@@ -71,22 +73,21 @@ class AlbumTableViewCell: UITableViewCell {
         horizontalStackView.addArrangedSubview(albumArtImageView)
         
         //vertical stack constraints
-        verticalStackView.topAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: 10).isActive = true
         verticalStackView.leadingAnchor.constraint(equalTo: horizontalStackView.leadingAnchor).isActive = true
+        verticalStackView.topAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: -0).isActive = true
         
         //add image constraints
         albumArtImageView.translatesAutoresizingMaskIntoConstraints = false
+        albumArtImageView.trailingAnchor.constraint(equalTo: horizontalStackView.trailingAnchor, constant: -0).isActive = true
+        albumArtImageView.topAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: 10).isActive = true
         albumArtImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         albumArtImageView.widthAnchor.constraint(equalToConstant: 175).isActive = true
-        albumArtImageView.topAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: 10).isActive = true
-        let albumTrailingAnchor = albumArtImageView.trailingAnchor.constraint(equalTo: horizontalStackView.trailingAnchor, constant: 10)
-        albumTrailingAnchor.priority = UILayoutPriority(rawValue: 750)
-        albumTrailingAnchor.isActive = true
+
         
         completeView.addSubview(horizontalStackView)
         //horizontal stack constraints
-        horizontalStackView.leadingAnchor.constraint(equalTo: completeView.leadingAnchor, constant: 10).isActive = true
-        horizontalStackView.trailingAnchor.constraint(equalTo: completeView.trailingAnchor, constant: 10).isActive = true
+        horizontalStackView.leadingAnchor.constraint(equalTo: completeView.leadingAnchor, constant: -0).isActive = true
+        horizontalStackView.trailingAnchor.constraint(equalTo: completeView.trailingAnchor, constant: -0).isActive = true
         horizontalStackView.topAnchor.constraint(equalTo: completeView.topAnchor, constant: 10).isActive = true
     }
     

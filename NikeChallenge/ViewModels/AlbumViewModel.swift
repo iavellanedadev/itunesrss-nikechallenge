@@ -22,6 +22,7 @@ class AlbumViewModel {
             delegate?.update()
         }
     }
+    var album: Album!
 }
 
 extension AlbumViewModel {

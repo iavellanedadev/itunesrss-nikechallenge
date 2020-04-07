@@ -20,9 +20,7 @@ class AlbumsTableViewController: UITableViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorInset = .zero
         tableView.separatorStyle = .none
-        
         tableView.backgroundColor = .gray
-
         tableView.tableFooterView = UIView(frame: .zero)
         
         viewModel.delegate = self
@@ -46,20 +44,18 @@ class AlbumsTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let detailsViewController = DetailsViewController()
-        
-        detailsViewController.album = viewModel.albums[indexPath.row]
-        detailsViewController.imgCache = viewModel.imgCache
-        
-        navigationController?.pushViewController(detailsViewController, animated: true)
+        let album: Album = viewModel.albums[indexPath.row]
+        viewModel.album = album
+        detailsViewController.viewModel = viewModel
+        navigationController?.pushViewController(detailsViewController, animated: false)
         
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let tableViewCell = tableView.dequeueReusableCell(withIdentifier: AlbumTableViewCell.identifier, for: indexPath)
         guard let albumCell = tableViewCell as? AlbumTableViewCell else { return tableViewCell}
-        
         let album: Album = viewModel.albums[indexPath.row]
-
+        
         albumCell.configureCellWith(albumName: album.name, artistName: album.artistName, artworkUrl: album.artworkUrl100, imgCache: viewModel.imgCache)
         
         return albumCell
