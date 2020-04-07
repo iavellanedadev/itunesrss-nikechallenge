@@ -2,8 +2,8 @@
 //  Album.swift
 //  NikeChallenge
 //
-//  Created by Consultant on 4/3/20.
-//  Copyright © 2020 Consultant. All rights reserved.
+//  Created by Avellaneda on 4/3/20.
+//  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
 import Foundation

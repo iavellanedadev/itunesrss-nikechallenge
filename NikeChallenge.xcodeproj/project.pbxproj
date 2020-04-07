@@ -23,6 +23,7 @@
 		02B8C91D243C347100992A31 /* NikeChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B8C91C243C347100992A31 /* NikeChallengeTests.swift */; };
 		02B8C928243C4BBA00992A31 /* mockFeedData.json in Resources */ = {isa = PBXBuildFile; fileRef = 02B8C927243C4BBA00992A31 /* mockFeedData.json */; };
 		02B8C92A243C538500992A31 /* mockAlbumData.json in Resources */ = {isa = PBXBuildFile; fileRef = 02B8C929243C538500992A31 /* mockAlbumData.json */; };
+		02B8C92C243CCF0100992A31 /* AlbumsTableViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B8C92B243CCF0100992A31 /* AlbumsTableViewController+TableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		02B8C91E243C347100992A31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02B8C927243C4BBA00992A31 /* mockFeedData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mockFeedData.json; sourceTree = "<group>"; };
 		02B8C929243C538500992A31 /* mockAlbumData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mockAlbumData.json; sourceTree = "<group>"; };
+		02B8C92B243CCF0100992A31 /* AlbumsTableViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTableViewController+TableView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 			children = (
 				02AA735324376E1E00FAFE5D /* Assets.xcassets */,
 				02AA736924376F1F00FAFE5D /* AlbumTableViewCell.swift */,
+				02B8C92B243CCF0100992A31 /* AlbumsTableViewController+TableView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -228,7 +231,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1140;
-				ORGANIZATIONNAME = Consultant;
+				ORGANIZATIONNAME = Avellaneda;
 				TargetAttributes = {
 					02AA734624376E1A00FAFE5D = {
 						CreatedOnToolsVersion = 11.4;
@@ -294,6 +297,7 @@
 				02AA734D24376E1A00FAFE5D /* SceneDelegate.swift in Sources */,
 				02B8C914243BFA8500992A31 /* DetailsViewController.swift in Sources */,
 				02B8C9032439600E00992A31 /* Genre.swift in Sources */,
+				02B8C92C243CCF0100992A31 /* AlbumsTableViewController+TableView.swift in Sources */,
 				02B8C90E243A405900992A31 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,7 +446,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Consultant.NikeChallenge;
+				PRODUCT_BUNDLE_IDENTIFIER = Avellaneda.NikeChallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -460,7 +464,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Consultant.NikeChallenge;
+				PRODUCT_BUNDLE_IDENTIFIER = Avellaneda.NikeChallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

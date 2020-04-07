@@ -2,74 +2,44 @@
 //  AlbumsTableViewController.swift
 //  NikeChallenge
 //
-//  Created by Consultant on 4/3/20.
-//  Copyright © 2020 Consultant. All rights reserved.
+//  Created by Avellaneda on 4/3/20.
+//  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
 import UIKit
 
-class AlbumsTableViewController: UITableViewController {
-
+class AlbumsTableViewController: UIViewController {
+    let tableView = UITableView()
     let viewModel = AlbumViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupTableView()
+    }
+    
+    func setupTableView()
+    {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.register(AlbumTableViewCell.self, forCellReuseIdentifier: AlbumTableViewCell.identifier)
-
+        
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorInset = .zero
         tableView.separatorStyle = .none
         tableView.backgroundColor = .gray
         tableView.tableFooterView = UIView(frame: .zero)
+
+        //table view constraints
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: -0).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -0).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -0).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -0).isActive = true
         
         viewModel.delegate = self
         viewModel.getMusic()
-    
-    }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.albums.count
-    }
-
-    //MARK: - Table view delegate
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let detailsViewController = DetailsViewController()
-        let album: Album = viewModel.albums[indexPath.row]
-        viewModel.album = album
-        detailsViewController.viewModel = viewModel
-        navigationController?.pushViewController(detailsViewController, animated: false)
-        
-    }
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: AlbumTableViewCell.identifier, for: indexPath)
-        guard let albumCell = tableViewCell as? AlbumTableViewCell else { return tableViewCell}
-        let album: Album = viewModel.albums[indexPath.row]
-        
-        albumCell.configureCellWith(albumName: album.name, artistName: album.artistName, artworkUrl: album.artworkUrl100, imgCache: viewModel.imgCache)
-        
-        return albumCell
     }
 
 }
-
-extension AlbumsTableViewController: AlbumDelegate
-{
-    func update()
-    {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-}
-

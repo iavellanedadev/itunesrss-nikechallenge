@@ -2,8 +2,8 @@
 //  AlbumTableViewCell.swift
 //  NikeChallenge
 //
-//  Created by Consultant on 4/3/20.
-//  Copyright © 2020 Consultant. All rights reserved.
+//  Created by Avellaneda on 4/3/20.
+//  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
 import UIKit
@@ -24,7 +24,7 @@ class AlbumTableViewCell: UITableViewCell {
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented, please use initWithStyle:andReuseIdentifier")
     }
     
     func setupCellView() {
@@ -95,25 +95,19 @@ class AlbumTableViewCell: UITableViewCell {
             self.albumNameLabel.text = albumName
             self.albumArtistLabel.text = artistName
         
-            if let cachedImage = imgCache.object(forKey:
-                NSString(string: artworkUrl)) as? UIImage {
+            if let cachedImage = imgCache.object(forKey: NSString(string: artworkUrl)) as? UIImage {
                 albumArtImageView.image = cachedImage
-            }else{
-                guard let imageUrl = URL(string: artworkUrl) else {return}
+            } else {
+                guard let imageUrl = URL(string: artworkUrl) else { return }
                 
-                imageUrl.getImage{ [weak self] img in
-                    guard let image = img else {return}
+                imageUrl.getImage{ [weak self] image in
+                    guard let image = image else {return}
                     imgCache.setObject(image, forKey: NSString(string: artworkUrl))
 
                     self?.albumArtImageView.image = image
                     
                 }
             }
-
-
-        
-        
-            
        
     }
 }

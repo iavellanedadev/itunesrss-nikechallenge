@@ -2,8 +2,8 @@
 //  AppleiTunesService.swift
 //  NikeChallenge
 //
-//  Created by Consultant on 4/4/20.
-//  Copyright © 2020 Consultant. All rights reserved.
+//  Created by Avellaneda on 4/4/20.
+//  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
 import Foundation
@@ -14,9 +14,7 @@ protocol GetAlbums {
 
 final class AppleiTunesService: GetAlbums {
     func getAlbums(completion: @escaping CompletionHandler) {
-        
-        var albums = [Album]()
-        
+
         guard let url = URL(string: Constants.URL_MUSIC_FEED_100) else {
             let error = ErrorInfo(errorCode: .badUrl, errorDescription: "BAD URL", statusCode: 0)
             completion(.failure(error))
@@ -24,22 +22,20 @@ final class AppleiTunesService: GetAlbums {
             
         }
         
-        URLSession.shared.dataTask(with: url){dat, _, err in
-            if let error = err {
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
                 let erroInfo = ErrorInfo(errorCode: .badRequest, errorDescription: "REQUEST ERROR: \(error.localizedDescription)", statusCode: 400)
                 completion(.failure(erroInfo))
                 return
             }
             
-            if let data = dat {
-                do{
+            if let data = data {
+                do {
                                         
                     let response = try JSONDecoder().decode(FeedResults.self, from: data)
-                    albums = response.results.results
-                    completion(.success(albums))
-                }catch{
-                    let error = ErrorInfo(errorCode: .parsingFailed, errorDescription: "PARSING RESPONSE ERROR: \(error.localizedDescription)", statusCode: 500)
-                    completion(.failure(error))
+                    completion(.success(response.results.results))
+                } catch {
+                    completion(.failure(ErrorInfo(errorCode: .parsingFailed, errorDescription: "PARSING RESPONSE ERROR: \(error.localizedDescription)", statusCode: 500)))
                 }
             }
         }.resume()

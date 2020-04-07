@@ -2,27 +2,25 @@
 //  Url+Extension.swift
 //  NikeChallenge
 //
-//  Created by Consultant on 4/6/20.
-//  Copyright © 2020 Consultant. All rights reserved.
+//  Created by Avellaneda on 4/6/20.
+//  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
 extension URL {
-    func getImage(completion: @escaping (UIImage?) -> Void)
-    {
-        URLSession.shared.dataTask(with: self){ (dat, _, err)
-            in
+    func getImage(completion: @escaping (UIImage?) -> Void) {
+        URLSession.shared.dataTask(with: self){ (data, _, error) in
             
-            if let error = err {
+            if let error = error {
                 print("Error Fetching Image: \(error.localizedDescription)")
                 completion(nil)
             }
-            if let data = dat {
+            
+            if let data = data {
                 DispatchQueue.main.async {
-                    let image = UIImage(data: data)
-                    completion(image)
+                    completion(UIImage(data: data))
                 }
             }
             

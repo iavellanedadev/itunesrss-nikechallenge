@@ -2,8 +2,8 @@
 //  DetailsViewController.swift
 //  NikeChallenge
 //
-//  Created by Consultant on 4/6/20.
-//  Copyright © 2020 Consultant. All rights reserved.
+//  Created by Avellaneda on 4/6/20.
+//  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
 import UIKit
@@ -135,8 +135,8 @@ class DetailsViewController: UIViewController {
         }else{
             guard let imageUrl = URL(string: viewModel.album.artworkUrl100) else {return}
             
-            imageUrl.getImage{ [weak self] img in
-                guard let image = img, let artworkUrl = self?.viewModel.album.artworkUrl100 else {return}
+            imageUrl.getImage{ [weak self] image in
+                guard let image = image, let artworkUrl = self?.viewModel.album.artworkUrl100 else {return}
                 self?.viewModel.imgCache.setObject(image, forKey: NSString(string: artworkUrl))
 
                 self?.detailsArtImageView.image = image
