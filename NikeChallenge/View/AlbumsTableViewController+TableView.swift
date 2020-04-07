@@ -17,21 +17,23 @@ extension AlbumsTableViewController: UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
         
         let detailsViewController = DetailsViewController()
-        let album: Album = viewModel.albums[indexPath.row]
-        viewModel.album = album
-        detailsViewController.viewModel = viewModel
+        let albumViewModel = viewModel.makeAlbumViewModel(for: indexPath.row)
+        detailsViewController.viewModel = albumViewModel
         navigationController?.pushViewController(detailsViewController, animated: false)
         
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let tableViewCell = tableView.dequeueReusableCell(withIdentifier: AlbumTableViewCell.identifier, for: indexPath)
-        guard let albumCell = tableViewCell as? AlbumTableViewCell else { return tableViewCell}
+        guard let albumCell = tableViewCell as? AlbumTableViewCell else { return tableViewCell }
         let album: Album = viewModel.albums[indexPath.row]
-        
-        albumCell.configureCellWith(albumName: album.name, artistName: album.artistName, artworkUrl: album.artworkUrl100, imgCache: viewModel.imgCache)
-        
+        albumCell.configureCellWith(albumName: album.name, artistName: album.artistName, artworkUrl: album.artworkUrl100)
         return albumCell
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        nsQueue.cancelAllOperations()
+        
     }
 }
 

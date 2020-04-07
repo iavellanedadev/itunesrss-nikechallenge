@@ -2,42 +2,42 @@
 //  AlbumViewModel.swift
 //  NikeChallenge
 //
-//  Created by Avellaneda on 4/3/20.
+//  Created by Avellaneda on 4/7/20.
 //  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
 import Foundation
 
-protocol AlbumDelegate: class {
-    func update()
-}
-
 class AlbumViewModel {
     weak var delegate: AlbumDelegate?
-    
-    let imgCache = NSCache<NSString, AnyObject>()
-    var albums = [Album]() {
-        didSet{
+
+    var album: Album {
+        didSet {
             delegate?.update()
         }
     }
-    var album: Album!
+    
+    init(album: Album) {
+        self.album = album
+    }
+
 }
 
 extension AlbumViewModel {
-    
-    func getMusic() {
-        AppleiTunesService().getAlbums { [weak self] response in
-            switch response {
-            case .success(let music):
-                guard let albums = music as? [Album] else { return }
-                print("Music Count: \(albums.count)")
-                self?.albums = albums
-                
-            case .failure(let err):
-                print("Failed Grabbing Albums: \(err.errorDescription ?? err.localizedDescription)")
-            }
-        }
+    var url: URL? {
+        URL(string: album.url)
     }
+    
+    var name: String {
+        album.name
+    }
+    
+    var artistName: String {
+        album.artistName
+    }
+    
+    var genres: String {
+        album.genres.prefix(3).map({$0.name}).joined(separator: "/")
+    }
+    
 }
-

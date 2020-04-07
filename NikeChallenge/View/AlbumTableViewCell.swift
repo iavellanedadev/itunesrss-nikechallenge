@@ -27,13 +27,19 @@ class AlbumTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented, please use initWithStyle:andReuseIdentifier")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        albumArtImageView.image = #imageLiteral(resourceName: "placeholdermusic")
+        albumArtImageView.cancelImageLoad()
+    }
+    
     func setupCellView() {
         let contentHeightAnchor = contentView.heightAnchor.constraint(equalToConstant: 200)
         
         contentHeightAnchor.priority = UILayoutPriority(rawValue: 750)
         contentHeightAnchor.isActive = true
         
-        albumArtImageView.image = #imageLiteral(resourceName: "placeholdermusic")
+
         albumArtImageView.contentMode = .scaleToFill
         albumNameLabel.font = UIFont.systemFont(ofSize: 24)
         albumNameLabel.numberOfLines = 0
@@ -91,23 +97,10 @@ class AlbumTableViewCell: UITableViewCell {
         horizontalStackView.topAnchor.constraint(equalTo: completeView.topAnchor, constant: 10).isActive = true
     }
     
-    func configureCellWith(albumName: String, artistName: String, artworkUrl: String, imgCache: NSCache<NSString, AnyObject>) {
+    func configureCellWith(albumName: String, artistName: String, artworkUrl: String) {
             self.albumNameLabel.text = albumName
             self.albumArtistLabel.text = artistName
-        
-            if let cachedImage = imgCache.object(forKey: NSString(string: artworkUrl)) as? UIImage {
-                albumArtImageView.image = cachedImage
-            } else {
-                guard let imageUrl = URL(string: artworkUrl) else { return }
-                
-                imageUrl.getImage{ [weak self] image in
-                    guard let image = image else {return}
-                    imgCache.setObject(image, forKey: NSString(string: artworkUrl))
-
-                    self?.albumArtImageView.image = image
-                    
-                }
-            }
+            self.albumArtImageView.loadImage(at: artworkUrl)
        
     }
 }

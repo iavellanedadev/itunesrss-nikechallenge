@@ -9,7 +9,7 @@
 import UIKit
 
 class DetailsViewController: UIViewController {
-
+    let contentView = UIView()
     let detailsAlbumLabel = UILabel()
     let detailsArtistLabel = UILabel()
     let detailsArtImageView = UIImageView()
@@ -30,7 +30,7 @@ class DetailsViewController: UIViewController {
     }
     
     @objc func goToStore(sender: UIButton) {
-        if let url = URL(string: viewModel.album.url) {
+        if let url = viewModel.url {
             if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
             }
@@ -62,7 +62,6 @@ class DetailsViewController: UIViewController {
         detailsStoreButton.setTitle("Check Out On iTunes Store", for: .normal)
         detailsStoreButton.addTarget(self, action: #selector(goToStore), for: .touchUpInside)
         
-        let contentView = UIView()
         view.addSubview(contentView)
         //main ui view constraints
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,27 +121,11 @@ class DetailsViewController: UIViewController {
     func configureViewController() {
         detailsAlbumLabel.text = viewModel.album.name
         detailsArtistLabel.text = viewModel.album.artistName
-        let genres = viewModel.album.genres.prefix(3).map({$0.name}).joined(separator: "/")
-        
-        detailsGenreLabel.text = genres
-        
+        detailsGenreLabel.text = viewModel.genres
         detailsReleaseDateLabel.text = viewModel.album.releaseDate
         detailsCopyrightLabel.text = viewModel.album.copyright
      
-        if let cachedImage = viewModel.imgCache.object(forKey:
-            NSString(string: viewModel.album.artworkUrl100)) as? UIImage {
-            detailsArtImageView.image = cachedImage
-        }else{
-            guard let imageUrl = URL(string: viewModel.album.artworkUrl100) else {return}
-            
-            imageUrl.getImage{ [weak self] image in
-                guard let image = image, let artworkUrl = self?.viewModel.album.artworkUrl100 else {return}
-                self?.viewModel.imgCache.setObject(image, forKey: NSString(string: artworkUrl))
-
-                self?.detailsArtImageView.image = image
-                
-            }
-        }
+        detailsArtImageView.loadImage(at: viewModel.album.artworkUrl100)
     }
 
 }

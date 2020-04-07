@@ -62,7 +62,7 @@ class NikeChallengeTests: XCTestCase {
         let bundle = Bundle(for:NikeChallengeTests.self)
 
         func getAlbums(completion: @escaping CompletionHandler) {
-            if let url =  bundle.url(forResource: mockDataFileName, withExtension: "json") {
+            if let url = bundle.url(forResource: mockDataFileName, withExtension: "json") {
                 do {
                     let data = try Data(contentsOf: url)
                     

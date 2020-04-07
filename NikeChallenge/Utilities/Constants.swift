@@ -8,11 +8,13 @@
 
 import Foundation
 
-public struct Constants {
+enum URLMusicFeed: String {
+    case oneHundred =  "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/100/explicit.json"
+    case ten =   "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/10/explicit.json"
+    case twentyFive =  "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/25/explicit.json"
+    case fifty =  "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/50/explicit.json"
     
-    public static let URL_MUSIC_FEED_100 = "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/100/explicit.json"
-    public static let URL_MUSIC_FEED_10 = "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/10/explicit.json"
-    public static let URL_MUSIC_FEED_25 = "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/25/explicit.json"
-    public static let URL_MUSIC_FEED_50 = "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/50/explicit.json"
-
+    var url: URL? {
+        URL(string: rawValue)
+    }
 }
