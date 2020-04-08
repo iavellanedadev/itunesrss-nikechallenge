@@ -2,7 +2,7 @@
 //  AlbumsTableViewController+TableView.swift
 //  NikeChallenge
 //
-//  Created by Consultant on 4/7/20.
+//  Created by Avellaneda on 4/7/20.
 //  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
@@ -19,21 +19,18 @@ extension AlbumsTableViewController: UITableViewDelegate
         let detailsViewController = DetailsViewController()
         let albumViewModel = viewModel.makeAlbumViewModel(for: indexPath.row)
         detailsViewController.viewModel = albumViewModel
-        navigationController?.pushViewController(detailsViewController, animated: false)
         
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        navigationController?.present(detailsViewController, animated: true)
         
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: AlbumTableViewCell.identifier, for: indexPath)
-        guard let albumCell = tableViewCell as? AlbumTableViewCell else { return tableViewCell }
-        let album: Album = viewModel.albums[indexPath.row]
-        albumCell.configureCellWith(albumName: album.name, artistName: album.artistName, artworkUrl: album.artworkUrl100)
-        return albumCell
     }
     
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        nsQueue.cancelAllOperations()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AlbumTableViewCell.identifier,for: indexPath) as? AlbumTableViewCell else { return UITableViewCell() }
         
+        let album = viewModel.albums[indexPath.row]
+        cell.configureCellWith(albumName: album.name, artistName: album.artistName, artworkUrl: album.artworkUrl100)
+        
+        return cell
     }
 }
 

@@ -11,7 +11,6 @@ import UIKit
 class AlbumsTableViewController: UIViewController {
     let tableView = UITableView()
     let viewModel = AlbumsViewModel()
-    let nsQueue = OperationQueue()
     
     override func viewDidLoad() {
         super.viewDidLoad()

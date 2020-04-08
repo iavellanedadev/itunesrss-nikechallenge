@@ -6,7 +6,7 @@
 //  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum URLMusicFeed: String {
     case oneHundred =  "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/100/explicit.json"
@@ -16,5 +16,23 @@ enum URLMusicFeed: String {
     
     var url: URL? {
         URL(string: rawValue)
+    }
+}
+
+enum Text {
+    public static func attributes(_ foregroundColor: UIColor? = nil,
+                                  font: UIFont? = nil) -> [NSAttributedString.Key: Any] {
+        
+        var attributes = [NSAttributedString.Key: Any]()
+        
+        if let color = foregroundColor {
+            attributes.updateValue(color, forKey: .foregroundColor)
+        }
+        
+        if let font = font {
+            attributes.updateValue(font, forKey: .font)
+        }
+        
+        return attributes
     }
 }

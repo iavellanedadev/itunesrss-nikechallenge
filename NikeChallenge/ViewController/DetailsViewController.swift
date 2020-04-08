@@ -10,13 +10,13 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     let contentView = UIView()
-    let detailsAlbumLabel = UILabel()
-    let detailsArtistLabel = UILabel()
-    let detailsArtImageView = UIImageView()
-    let detailsGenreLabel = UILabel()
-    let detailsReleaseDateLabel = UILabel()
-    let detailsCopyrightLabel = UILabel()
-    let detailsStoreButton = UIButton(frame: CGRect(x: 200, y: 200, width: 100, height: 200))
+    let albumLabel = UILabel()
+    let artistLabel = UILabel()
+    let artImageView = UIImageView()
+    let genreLabel = UILabel()
+    let releaseDateLabel = UILabel()
+    let copyrightLabel = UILabel()
+    let storeButton = UIButton(frame: CGRect(x: 200, y: 200, width: 100, height: 200))
     
     static let identifier = "DetailsViewController"
     
@@ -32,7 +32,7 @@ class DetailsViewController: UIViewController {
     /**
      Objective-C Selector function for external link opening
 
-     Calling this method takes the `viewmodel.url` to externally open a url/link using safari 
+     Calling this method takes the `viewmodel.url` to externally open a url/link using safari
 
      - Parameter sender: the button that calls the function
      */
@@ -50,82 +50,93 @@ class DetailsViewController: UIViewController {
      Calling this method on viewDidLoad to ensure our UI is approprately set up and Auto Layout is correct
      */
     func setupView() {
-        detailsAlbumLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1)
-        detailsAlbumLabel.textAlignment = .center
-        detailsAlbumLabel.numberOfLines = 0
+        view.backgroundColor = .white
         
-        detailsArtistLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title2)
-        detailsArtistLabel.textAlignment = .center
-        detailsArtistLabel.numberOfLines = 0
+        albumLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1)
+        albumLabel.textAlignment = .center
+        albumLabel.numberOfLines = 0
         
-        detailsGenreLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title3)
-        detailsGenreLabel.textAlignment = .center
+        artistLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title2)
+        artistLabel.textAlignment = .center
+        artistLabel.numberOfLines = 0
         
-        detailsCopyrightLabel.textAlignment = .center
-        detailsCopyrightLabel.numberOfLines = 0
+        genreLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title3)
+        genreLabel.textAlignment = .center
         
-        detailsReleaseDateLabel.textAlignment = .center
+        copyrightLabel.textAlignment = .center
+        copyrightLabel.numberOfLines = 0
         
-        detailsArtImageView.image = #imageLiteral(resourceName: "placeholdermusic")
-        detailsArtImageView.contentMode = .scaleToFill
+        releaseDateLabel.textAlignment = .center
         
-        detailsStoreButton.backgroundColor = .systemGreen
-        detailsStoreButton.setTitle("Check Out On iTunes Store", for: .normal)
-        detailsStoreButton.addTarget(self, action: #selector(goToStore), for: .touchUpInside)
+        artImageView.image = #imageLiteral(resourceName: "placeholdermusic")
+        artImageView.contentMode = .scaleToFill
+        
+        let attributedText = NSAttributedString(string: NSLocalizedString("Check Out On iTunes Store", comment: "open iTunes store text"),attributes: Text.attributes(.white, font: .boldSystemFont(ofSize: 18)))
+        
+        storeButton.backgroundColor = .systemGreen
+        storeButton.layer.cornerRadius = 20
+        storeButton.setAttributedTitle(attributedText, for: .normal)
+        storeButton.addTarget(self, action: #selector(goToStore), for: .touchUpInside)
         
         view.addSubview(contentView)
         //main ui view constraints
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -0).isActive = true
-        contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0).isActive = true
-        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: -0).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0).isActive = true
+        contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         
-        view.addSubview(detailsArtImageView)
-        view.addSubview(detailsAlbumLabel)
-        view.addSubview(detailsArtistLabel)
-        view.addSubview(detailsGenreLabel)
-        view.addSubview(detailsReleaseDateLabel)
-        view.addSubview(detailsCopyrightLabel)
-        view.addSubview(detailsStoreButton)
+        view.addSubview(artImageView)
+        view.addSubview(albumLabel)
+        view.addSubview(artistLabel)
+        view.addSubview(genreLabel)
+        view.addSubview(releaseDateLabel)
+        view.addSubview(copyrightLabel)
+        view.addSubview(storeButton)
         
         //detail art image view constraints
-        detailsArtImageView.translatesAutoresizingMaskIntoConstraints = false
-        detailsArtImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -0).isActive = true
-        detailsArtImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0).isActive = true
-        detailsArtImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -0).isActive = true
-        detailsArtImageView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        artImageView.translatesAutoresizingMaskIntoConstraints = false
+        artImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: artImageView.trailingAnchor, constant: 0).isActive = true
+        artImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        artImageView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         //details album label constraints
-        detailsAlbumLabel.translatesAutoresizingMaskIntoConstraints = false
-        detailsAlbumLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -0).isActive = true
-        detailsAlbumLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0).isActive = true
-        detailsAlbumLabel.topAnchor.constraint(equalTo: detailsArtImageView.bottomAnchor, constant: 15).isActive = true
+        albumLabel.translatesAutoresizingMaskIntoConstraints = false
+        albumLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: albumLabel.trailingAnchor, constant: 8).isActive = true
+        albumLabel.topAnchor.constraint(equalTo: artImageView.bottomAnchor, constant: 16).isActive = true
+        
         //details artist label constraints
-        detailsArtistLabel.translatesAutoresizingMaskIntoConstraints = false
-        detailsArtistLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -0).isActive = true
-        detailsArtistLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0).isActive = true
-        detailsArtistLabel.topAnchor.constraint(equalTo: detailsAlbumLabel.bottomAnchor, constant: 15).isActive = true
+        artistLabel.translatesAutoresizingMaskIntoConstraints = false
+        artistLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: artistLabel.trailingAnchor, constant: 8).isActive = true
+        artistLabel.topAnchor.constraint(equalTo: albumLabel.bottomAnchor, constant: 16).isActive = true
+        
         //details genre label constraints
-        detailsGenreLabel.translatesAutoresizingMaskIntoConstraints = false
-        detailsGenreLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -0).isActive = true
-        detailsGenreLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0).isActive = true
-        detailsGenreLabel.topAnchor.constraint(equalTo: detailsArtistLabel.bottomAnchor, constant: 15).isActive = true
+        genreLabel.translatesAutoresizingMaskIntoConstraints = false
+        genreLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: genreLabel.trailingAnchor, constant: 8).isActive = true
+        genreLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 16).isActive = true
+        
         //details copyright label constraints
-        detailsCopyrightLabel.translatesAutoresizingMaskIntoConstraints = false
-        detailsCopyrightLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -0).isActive = true
-        detailsCopyrightLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0).isActive = true
-        detailsCopyrightLabel.topAnchor.constraint(equalTo: detailsGenreLabel.bottomAnchor, constant: 15).isActive = true
+        copyrightLabel.translatesAutoresizingMaskIntoConstraints = false
+        copyrightLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: copyrightLabel.trailingAnchor, constant: 8).isActive = true
+        copyrightLabel.topAnchor.constraint(equalTo: genreLabel.bottomAnchor, constant: 8).isActive = true
+        
         //details releasedate lable constraints
-        detailsReleaseDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        detailsReleaseDateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -0).isActive = true
-        detailsReleaseDateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0).isActive = true
-        detailsReleaseDateLabel.topAnchor.constraint(equalTo: detailsCopyrightLabel.bottomAnchor, constant: 15).isActive = true
+        releaseDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        releaseDateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: releaseDateLabel.trailingAnchor, constant: 8).isActive = true
+        releaseDateLabel.topAnchor.constraint(equalTo: copyrightLabel.bottomAnchor, constant: 8).isActive = true
+        
         //details store button constraints
-        detailsStoreButton.translatesAutoresizingMaskIntoConstraints = false
-        detailsStoreButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
-        contentView.trailingAnchor.constraint(equalTo: detailsStoreButton.trailingAnchor, constant: 20).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: detailsStoreButton.bottomAnchor, constant: 20).isActive = true
+        storeButton.translatesAutoresizingMaskIntoConstraints = false
+        storeButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        storeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: storeButton.trailingAnchor, constant: 20).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: storeButton.bottomAnchor, constant: 20).isActive = true
         
     }
     
@@ -135,13 +146,13 @@ class DetailsViewController: UIViewController {
      Calling this method sets the UI elements with the appropriate data from our `viewModel`
      */
     func configureViewController() {
-        detailsAlbumLabel.text = viewModel.album.name
-        detailsArtistLabel.text = viewModel.album.artistName
-        detailsGenreLabel.text = viewModel.genres
-        detailsReleaseDateLabel.text = viewModel.album.releaseDate
-        detailsCopyrightLabel.text = viewModel.album.copyright
+        albumLabel.text = viewModel.album.name
+        artistLabel.text = viewModel.album.artistName
+        genreLabel.text = viewModel.genres
+        releaseDateLabel.text = viewModel.album.releaseDate
+        copyrightLabel.text = viewModel.album.copyright
      
-        detailsArtImageView.loadImage(at: viewModel.album.artworkUrl100)
+        artImageView.loadImage(at: viewModel.album.artworkUrl100)
     }
 
 }

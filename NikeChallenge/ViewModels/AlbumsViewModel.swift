@@ -11,7 +11,6 @@ import Foundation
 class AlbumsViewModel {
     weak var delegate: AlbumDelegate?
     
-    let imgCache = NSCache<NSString, AnyObject>()
     var albums = [Album]() {
         didSet{
             delegate?.update()
