@@ -10,10 +10,12 @@ import Foundation
 
 class AlbumViewModel {
     weak var delegate: AlbumDelegate?
-
-    var album: Album {
+    
+    var album: Album
+    
+    private(set) var state: AlbumsViewModelState = .loaded {
         didSet {
-            delegate?.update()
+            delegate?.update(state)
         }
     }
     

@@ -6,15 +6,14 @@
 //  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 extension UIImageView {
     func loadImage(at url: String) {
-      UIImageLoader.loader.load(url, for: self)
+        UIImageLoader.loader.load(url, for: self)
     }
 
     func cancelImageLoad() {
-      UIImageLoader.loader.cancel(for: self)
+        UIImageLoader.loader.cancel(for: self)
     }
 }

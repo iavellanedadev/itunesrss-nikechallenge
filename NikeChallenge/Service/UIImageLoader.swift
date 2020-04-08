@@ -6,8 +6,8 @@
 //  Copyright © 2020 Avellaneda. All rights reserved.
 //
 
-import Foundation
 import UIKit
+
 ///Our singleton class for Loading the images onto the imageView, or cancelling the load if the user scrolls away from the image (on the cell)
 final class UIImageLoader {
     static let loader = UIImageLoader()
@@ -26,11 +26,10 @@ final class UIImageLoader {
      */
     func load(_ url: String, for imageView: UIImageView) {
         
-        let token = imageFetcher.loadImage(url) { result in
-          
+        let uniqueId = imageFetcher.loadImage(url) { result in
+            
             defer { self.imageIdStorage.removeValue(forKey: imageView) }
             do {
-            
                 let image = try result.get()
                 DispatchQueue.main.async {
                     imageView.image = image
@@ -40,8 +39,8 @@ final class UIImageLoader {
             }
         }
         
-        if let token = token {
-            imageIdStorage[imageView] = token
+        if let uniqueId = uniqueId {
+            imageIdStorage[imageView] = uniqueId
         }
     }
 

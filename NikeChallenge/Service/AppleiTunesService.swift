@@ -23,7 +23,9 @@ final class AppleiTunesService: GetAlbums {
     func getAlbums(for feed: URL?, completion: @escaping AlbumsCompletionHandler) {
 
         guard let url = feed else {
-            completion(.failure(ErrorInfo(errorCode: .badUrl, errorDescription: "BAD URL", statusCode: 0)))
+            completion(.failure(ErrorInfo(errorCode: .badUrl,
+                                          errorDescription: "BAD URL",
+                                          statusCode: 0)))
             return
         }
         
@@ -34,18 +36,27 @@ final class AppleiTunesService: GetAlbums {
             }
             
             if let error = error {
-                let erroInfo = ErrorInfo(errorCode: .badRequest, errorDescription: "REQUEST ERROR: \(error.localizedDescription)", statusCode: statusCode)
+                let erroInfo = ErrorInfo(errorCode: .badRequest,
+                                         errorDescription: "REQUEST ERROR: \(error.localizedDescription)",
+                                         statusCode: statusCode)
                 completion(.failure(erroInfo))
                 return
             }
             
-            if let data = data {
-                do {
-                    let response = try JSONDecoder().decode(FeedResults.self, from: data)
-                    completion(.success(response.results.results))
-                } catch {
-                    completion(.failure(ErrorInfo(errorCode: .parsingFailed, errorDescription: "PARSING RESPONSE ERROR: \(error.localizedDescription)", statusCode: statusCode)))
-                }
+            guard let data = data else {
+                let erroInfo = ErrorInfo(errorCode: .errorResponse,
+                                         errorDescription: "NO DATA IN RESPONSE",
+                                         statusCode: statusCode)
+                completion(.failure(erroInfo))
+                return
+            }
+            do {
+                let response = try JSONDecoder().decode(FeedResults.self, from: data)
+                completion(.success(response.results.results))
+            } catch {
+                completion(.failure(ErrorInfo(errorCode: .parsingFailed,
+                                              errorDescription: "PARSING RESPONSE ERROR: \(error.localizedDescription)",
+                                              statusCode: statusCode)))
             }
         }.resume()
     }

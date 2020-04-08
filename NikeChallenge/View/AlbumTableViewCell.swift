@@ -9,7 +9,6 @@
 import UIKit
 
 class AlbumTableViewCell: UITableViewCell {
-    
     let albumNameLabel = UILabel()
     let albumArtistLabel = UILabel()
     let albumArtImageView = UIImageView()

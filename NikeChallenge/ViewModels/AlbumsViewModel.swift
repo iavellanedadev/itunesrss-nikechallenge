@@ -11,10 +11,17 @@ import Foundation
 class AlbumsViewModel {
     weak var delegate: AlbumDelegate?
     
-    var albums = [Album]() {
-        didSet{
-            delegate?.update()
+    private var albums = [Album]()
+    private let service: GetAlbums
+    
+    private(set) var state: AlbumsViewModelState = .empty {
+        didSet {
+            delegate?.update(state)
         }
+    }
+    
+    init(service: GetAlbums = AppleiTunesService()) {
+        self.service = service
     }
 }
 
@@ -25,14 +32,18 @@ extension AlbumsViewModel {
      Calling this method fetches the music to display in our list
      */
     func getMusic() {
-        AppleiTunesService().getAlbums(for: URLMusicFeed.oneHundred.url) { [weak self] response in
+        service.getAlbums(for: WebURL.buildURLWithQueryOf(.fifty)) { [weak self] response in
             switch response {
             case .success(let albums):
-                print("Music Count: \(albums.count)")
-                self?.albums = albums
-                
+                if albums.isEmpty == false {
+                    self?.albums = albums
+                    self?.state = .loaded
+                } else {
+                    self?.state = .empty
+                }
             case .failure(let err):
-                print("Failed Grabbing Albums: \(err.errorDescription ?? err.localizedDescription)")
+                let errorString = "Failed Grabbing Albums: \(err.errorDescription ?? err.localizedDescription)"
+                self?.state = .error(errorString)
             }
         }
     }
@@ -50,5 +61,18 @@ extension AlbumsViewModel {
         let album = albums[index]
         return AlbumViewModel(album: album)
     }
+}
+
+extension AlbumsViewModel {
+
+    var count: Int {
+        albums.count
+    }
+    
+    func albumInfo(for index: Int) -> (name: String, artistName: String, artworkUrl: String) {
+        let album = albums[index]
+        return (name: album.name, artistName: album.artistName, artworkUrl: album.artworkUrl100)
+    }
+    
 }
 

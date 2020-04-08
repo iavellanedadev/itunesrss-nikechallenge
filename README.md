@@ -3,7 +3,7 @@ Fetching Music from iTunes' RSS Feed and Displaying them in Table View->Detailed
 
 Author: Iban Avellaneda
 
-A small app built to fit the criteria provided by Nike that takes advantage of iTunes' RSS Feed https://rss.itunes.apple.com/en-us
+A small app built to fit the criteria provided by Nike that takes advantage of [iTunes' RSS Feed](https://rss.itunes.apple.com/en-us)
 
 ## Table of Contents
 

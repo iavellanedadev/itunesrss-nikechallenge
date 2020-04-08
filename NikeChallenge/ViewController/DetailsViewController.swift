@@ -71,7 +71,9 @@ class DetailsViewController: UIViewController {
         artImageView.image = #imageLiteral(resourceName: "placeholdermusic")
         artImageView.contentMode = .scaleToFill
         
-        let attributedText = NSAttributedString(string: NSLocalizedString("Check Out On iTunes Store", comment: "open iTunes store text"),attributes: Text.attributes(.white, font: .boldSystemFont(ofSize: 18)))
+        let attributedText = NSAttributedString(string: NSLocalizedString("Check Out On iTunes Store",
+                                                                          comment: "open iTunes store text"),
+                                                attributes: .iTunes)
         
         storeButton.backgroundColor = .systemGreen
         storeButton.layer.cornerRadius = 20
@@ -84,7 +86,7 @@ class DetailsViewController: UIViewController {
         contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: 0).isActive = true
         
         view.addSubview(artImageView)
         view.addSubview(albumLabel)

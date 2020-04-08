@@ -14,7 +14,6 @@ class AlbumsTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupTableView()
     }
     
@@ -24,8 +23,7 @@ class AlbumsTableViewController: UIViewController {
      Calling this method from viewDidLoad to ensure we setup our UI properly,
      registering out tableview Cell and making our initial call to populate our list with data
      */
-    func setupTableView()
-    {
+    func setupTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
@@ -39,13 +37,28 @@ class AlbumsTableViewController: UIViewController {
 
         //table view constraints
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: -0).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -0).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -0).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -0).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
         viewModel.delegate = self
         viewModel.getMusic()
     }
 
 }
+
+extension AlbumsTableViewController {
+    func showErrorDialog(message: String) {
+        let errorAlert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+        let tryAgainButton = UIAlertAction(title: "Try Again", style: .default) { _ in
+            self.viewModel.getMusic()
+        }
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        errorAlert.addAction(okButton)
+        errorAlert.addAction(tryAgainButton)
+        errorAlert.preferredAction = tryAgainButton
+        present(errorAlert, animated: true)
+    }
+}
+

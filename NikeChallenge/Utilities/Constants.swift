@@ -8,19 +8,25 @@
 
 import UIKit
 
-enum URLMusicFeed: String {
-    case oneHundred =  "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/100/explicit.json"
-    case ten =   "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/10/explicit.json"
-    case twentyFive =  "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/25/explicit.json"
-    case fifty =  "https://rss.itunes.apple.com/api/v1/us/apple-music/coming-soon/all/50/explicit.json"
+enum WebURL: String {
+    case base = "https://rss.itunes.apple.com"
+    case path = "/api/v1/us/apple-music/top-albums/all/"
+    case json = "explicit.json"
     
-    var url: URL? {
-        URL(string: rawValue)
+    static func buildURLWithQueryOf(_ number: Quantity) -> URL? {
+        return URL(string: base.rawValue + path.rawValue + "\(number.rawValue)/" + json.rawValue)
     }
 }
 
-enum Text {
-    public static func attributes(_ foregroundColor: UIColor? = nil,
+enum Quantity: Int {
+    case ten = 10
+    case twentyFive = 25
+    case fifty = 50
+    case oneHundred = 100
+}
+
+extension NSAttributedString {
+    public static func makeAttributes(_ foregroundColor: UIColor? = nil,
                                   font: UIFont? = nil) -> [NSAttributedString.Key: Any] {
         
         var attributes = [NSAttributedString.Key: Any]()
@@ -35,4 +41,11 @@ enum Text {
         
         return attributes
     }
+}
+
+extension Dictionary where Key == NSAttributedString.Key, Value == Any {
+    static let iTunes: [NSAttributedString.Key : Any] = [
+               .foregroundColor: UIColor.white as Any,
+               .font: UIFont.boldSystemFont(ofSize: 18) as Any
+           ]
 }

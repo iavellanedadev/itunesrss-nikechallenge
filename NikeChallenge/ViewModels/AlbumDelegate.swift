@@ -9,5 +9,5 @@
 import Foundation
 
 protocol AlbumDelegate: AnyObject {
-    func update()
+    func update(_ state: AlbumsViewModelState)
 }

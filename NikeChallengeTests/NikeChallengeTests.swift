@@ -13,7 +13,6 @@ class NikeChallengeTests: XCTestCase {
     var mockAppleiTunesService: MockAppleiTunesService!
     var mockDataFileName: String!
     let bundle = Bundle(for:NikeChallengeTests.self)
-
     
     override func setUpWithError() throws {
         mockAppleiTunesService = MockAppleiTunesService()
@@ -27,16 +26,22 @@ class NikeChallengeTests: XCTestCase {
      the mockdata is set to 38, all we want to ensure is that there at more than 10 items
      */
     func testFetchDataCount() {
-        let url = self.bundle.url(forResource: mockDataFileName, withExtension: "json")
-        mockAppleiTunesService.getAlbums(for: url){ result in
+        // Given
+        let url = bundle.url(forResource: mockDataFileName, withExtension: "json")
+        var loadedAlbums = [Album]()
+        
+        // When
+        mockAppleiTunesService.getAlbums(for: url) { result in
             switch result {
             case .success(let albums):
-                XCTAssertGreaterThan(albums.count, 10)
-                
+                loadedAlbums = albums
             case .failure(let err):
                 XCTFail("Failed Grabbing Albums: \(err.errorDescription ?? err.localizedDescription)")
             }
         }
+        
+        // Then
+        XCTAssertGreaterThan(loadedAlbums.count, 10)
     }
     
     /**
@@ -46,16 +51,22 @@ class NikeChallengeTests: XCTestCase {
      we really only need 2 of these here: `album.artistName` and `album.genres`
      */
     func testAlbumDataFields() {
-
-        if let album = mockAppleiTunesService.getSingleAlbum() {
-            
-            XCTAssertTrue(album.artistName.count > 0)
-            XCTAssertGreaterThanOrEqual(album.genres.count, 1)
+        // Given
+        var album: Album?
+        
+        // When
+        if let singleAlbum = mockAppleiTunesService.getSingleAlbum() {
+            album = singleAlbum
         }
-        else{
+        else {
             XCTFail("Failed Getting Album")
         }
-
+        
+        // Then
+        let artistNameLength = album?.artistName.count ?? 0
+        let genreCount = album?.genres.count ?? 0
+        XCTAssertTrue(artistNameLength > 0)
+        XCTAssertGreaterThanOrEqual(genreCount, 1)
     }
     
     /**
@@ -66,61 +77,80 @@ class NikeChallengeTests: XCTestCase {
      2. measure the time it takes to format our string for displaying the genres
      */
     func testAlbumGenresCount() {
-        if let album = mockAppleiTunesService.getSingleAlbum() {
-            
-            XCTAssertGreaterThanOrEqual(album.genres.count, 2)
+        // Given
+        var album: Album?
+        
+        // When
+        if let singleAlbum = mockAppleiTunesService.getSingleAlbum() {
+            album = singleAlbum
             measure {
-                let _ = album.genres.prefix(3).map({$0.name}).joined(separator: "/")
+                let _ = album?.genres.prefix(3).map({$0.name}).joined(separator: "/")
             }
         }
-        else{
+        else {
             XCTFail("Failed Getting Album")
         }
+        
+        // Then
+        let genreCount = album?.genres.count ?? 0
+        XCTAssertGreaterThanOrEqual(genreCount, 2)
     }
-/// Our mock service class for testing, we want to use our mock data, conform to our `GetAlbums` protocol and use this class for testing out business logic, without worrying about a backend being down or having latency issues that can affect our assertions unpredictably
-    class MockAppleiTunesService: GetAlbums {
+    
+    func testViewModelFetch() {
+        // Given
+        let viewModel = AlbumsViewModel(service: mockAppleiTunesService)
+        
+        // When
+        viewModel.getMusic()
+        
+        // Then
+        XCTAssertGreaterThan(viewModel.count, 10)
+    }
+    
+    func testSingleAlbumViewModel()
+    {
+        // Given
+        let viewModel = AlbumsViewModel(service: mockAppleiTunesService)
+        viewModel.getMusic()
+        let albumIndex = Int.random(in: 0...10)
+        let singleAlbumViewModel = viewModel.makeAlbumViewModel(for: albumIndex)
+        
+        //When
+        let artistName = singleAlbumViewModel.artistName
+        let name = singleAlbumViewModel.name
+        let genres = singleAlbumViewModel.genres
+        let url = singleAlbumViewModel.url
+        
+        //Then
+        let artistNameLength = artistName.count
+        XCTAssertGreaterThan(artistNameLength, 0)
+        let nameLength = name.count
+        XCTAssertGreaterThan(nameLength, 0)
+        let isUrl = url?.isFileURL
+        XCTAssertNotNil(isUrl)
+        let genresLength = genres.count
+        XCTAssertGreaterThan(genresLength, 0)
 
-        var mockDataFileName = "mockFeedData"
-        let bundle = Bundle(for:NikeChallengeTests.self)
-        /**
-         Get the albums from the itunes rss feed
-
-         Calling this method gets  an `Album` array from JSON fetched.
-
-         - Parameter feed: the URL/endpoint where we are fetching this data from (in this case our main bundle)
-         */
-        func getAlbums(for feed: URL?, completion: @escaping AlbumsCompletionHandler) {
-            if let url = bundle.url(forResource: mockDataFileName, withExtension: "json") {
-                do {
-                    let data = try Data(contentsOf: url)
-                    
-                    let response = try JSONDecoder().decode(FeedResults.self, from: data)
-                    completion(.success(response.results.results))
-                  } catch {
-                    let error = ErrorInfo(errorCode: .parsingFailed, errorDescription: "PARSING RESPONSE ERROR: \(error.localizedDescription)", statusCode: 500)
-                    completion(.failure(error))
+    }
+    
+    func testImageLoader() {
+        //Given
+        let testImageFetcher = ImageFetcher()
+        var testImage = UIImage()
+        
+        //When
+        if let url = bundle.url(forResource: "placeholdermusic", withExtension:"png")?.absoluteString {
+            let _ = testImageFetcher.loadImage(url) { (result) in
+                switch result {
+                case .success(let image):
+                    testImage = image
+                case .failure(let error):
+                    XCTFail("Failed Loading Image: \(error.localizedDescription)")
                 }
             }
         }
-        /**
-         Get a single album!
-
-         Calling this method gets  an `Album` array from mock JSON stored locally
-         */
-        func getSingleAlbum() -> Album?
-        {
-            if let url =  bundle.url(forResource: "mockAlbumData", withExtension: "json") {
-                do {
-                    let data = try Data(contentsOf: url)
-                    
-                    let response = try JSONDecoder().decode(Album.self, from: data)
-                    return response
-                  } catch {
-                       print("Error Parsing Json")
-                    return nil
-                }
-            }
-            return nil
-        }
+        //Then
+        XCTAssertNotNil(testImage)
     }
+    
 }
